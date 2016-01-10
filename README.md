@@ -4,4 +4,4 @@ Simple playground application using Spring Boot, Jersey and JWT to
 * provide an endpoint to supply JWT access tokens to the resource
 
 ## Credits
-Heavily inspired by https://github.com/brahalla/Cerberus [brahalla/Cerberus](https://github.com/brahalla/Cerberus) 
+Heavily inspired by [brahalla/Cerberus](https://github.com/brahalla/Cerberus) 
