@@ -8,12 +8,26 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
 
 public class PreAuthenticatedTokenHeaderProcessingFilter extends RequestHeaderAuthenticationFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(PreAuthenticatedTokenHeaderProcessingFilter.class);
+
+    private String principalRequestHeader;
+
+    @Override
+    protected void successfulAuthentication(final HttpServletRequest request, final HttpServletResponse response,
+            final Authentication authResult) {
+        logger.debug("successfulAuthentication: {}", authResult);
+
+        String tokenKey = request.getHeader(principalRequestHeader);
+        response.addHeader(principalRequestHeader, tokenKey);
+
+        super.successfulAuthentication(request, response, authResult);
+    }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
@@ -32,5 +46,11 @@ public class PreAuthenticatedTokenHeaderProcessingFilter extends RequestHeaderAu
         } catch (IOException e) {
             logger.warn("Unexpected IO exception", e);
         }
+    }
+
+    @Override
+    public void setPrincipalRequestHeader(final String principalRequestHeader) {
+        this.principalRequestHeader = principalRequestHeader;
+        super.setPrincipalRequestHeader(principalRequestHeader);
     }
 }

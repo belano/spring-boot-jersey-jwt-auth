@@ -2,6 +2,7 @@ package com.example.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
-import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
 
 import com.example.security.EntryPointUnauthorizedHandler;
 import com.example.security.PreAuthenticatedTokenHeaderProcessingFilter;
@@ -75,6 +75,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
+    // See https://github.com/spring-projects/spring-boot/issues/2173
+    @Bean
+    public FilterRegistrationBean registration(PreAuthenticatedTokenHeaderProcessingFilter filter) {
+        FilterRegistrationBean registration = new FilterRegistrationBean(filter);
+        registration.setEnabled(false);
+        return registration;
+    }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // @formatter:off
@@ -95,8 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // @formatter:on
 
         // Custom JWT based authentication
-        httpSecurity.addFilterBefore(requestHeaderAuthenticationFilter(authenticationManager()),
-                RequestHeaderAuthenticationFilter.class);
+        httpSecurity.addFilter(requestHeaderAuthenticationFilter(authenticationManager()));
     }
 
 }
