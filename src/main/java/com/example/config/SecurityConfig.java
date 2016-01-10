@@ -69,7 +69,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setAuthenticationManager(authenticationManager);
         filter.setExceptionIfHeaderMissing(false);
         filter.setPrincipalRequestHeader(tokenHeader);
-        // filter.setPrincipalRequestHeader("X-Auth-Token");
         filter.setInvalidateSessionOnPrincipalChange(true);
         filter.setCheckForPrincipalChanges(true);
         filter.setContinueFilterChainOnUnsuccessfulAuthentication(false);

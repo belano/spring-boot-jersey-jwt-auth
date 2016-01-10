@@ -14,7 +14,6 @@ public class JerseyConfig extends ResourceConfig {
 
     public JerseyConfig() {
         packages("com.example");
-        // packages("com.example.provider");
         register(HelloResource.class);
         register(AuthResource.class);
     }

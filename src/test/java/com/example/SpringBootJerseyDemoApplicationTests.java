@@ -34,8 +34,6 @@ public class SpringBootJerseyDemoApplicationTests {
     @Value("${local.server.port}")
     int port;
 
-    ObjectMapper mapper = new ObjectMapper();
-
     @Before
     public void setUp() {
         RestAssured.port = port;
