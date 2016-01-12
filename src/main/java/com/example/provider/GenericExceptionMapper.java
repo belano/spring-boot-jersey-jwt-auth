@@ -15,7 +15,7 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
 
     @Override
     public Response toResponse(Throwable exception) {
-        logger.debug("Exception: {}", exception.getMessage());
+        logger.debug("Exception: {} - {}", exception, exception.getMessage());
         return Response.status(Status.INTERNAL_SERVER_ERROR).entity(exception.getMessage()).type("text/plain").build();
     }
 
